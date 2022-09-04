@@ -37,3 +37,8 @@ html {
 main {
   position: relative;
 }
+button,
+input,
+a {
+  outline: none;
+}
