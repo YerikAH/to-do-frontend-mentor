@@ -54,10 +54,33 @@ const ButtonClear = styled.button`
   font-size: 0.9rem;
   color: var(--dark-grayish-blue);
 `;
+const DivFilter = styled.div`
+  background-color: var(--very-light-gray);
+  border-radius: 0.4em;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-evenly;
+`;
+const ButtonFilter = styled.button`
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: ${(props) =>
+    props.activeButton ? "var(--bright-blue)" : "  var(--dark-grayish-blue);"};
+
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 1rem;
+`;
 
 export default function FormToDo() {
+  let componentOption = null;
   const [work, setWork] = useState("");
   const [form, setForm] = useState([]);
+  const [condition, setCondition] = useState("all");
+  const [allFilter, setAllFilter] = useState([]);
+  const [completedFilter, setCompletedFilter] = useState([]);
+  const [activeFilter, setActiveFilter] = useState([]);
   const handleClick = (e) => {
     e.preventDefault();
     let workInfo = {
@@ -66,24 +89,100 @@ export default function FormToDo() {
       state: false,
     };
     setForm([...form, workInfo]);
+    setAllFilter(form);
+    setCompletedFilter(form);
+    setActiveFilter(form);
     setWork("");
   };
   const handleRemoveTask = (id) => {
     let varTemp = [...form];
     let otherVar = varTemp.filter((item) => item.id !== id);
     setForm(otherVar);
+    setAllFilter(form);
+    setCompletedFilter(form);
+    setActiveFilter(form);
   };
   const handleEdit = (id) => {
     let varTemp = [...form];
     let otherVar = varTemp.find((item) => item.id === id);
     otherVar.state = !otherVar.state;
     setForm(varTemp);
+    setAllFilter(form);
+    setCompletedFilter(form);
+    setActiveFilter(form);
   };
   const handleClearCompleted = () => {
     let varTemp = [...form];
     let otherVar = varTemp.filter((item) => item.state !== true);
     setForm(otherVar);
+    setAllFilter(form);
+    setCompletedFilter(form);
+    setActiveFilter(form);
   };
+  const handleAllFilter = (e) => {
+    setCondition(e.target.value);
+    setForm(allFilter);
+  };
+  const handleCompletedFilter = (e) => {
+    setCondition(e.target.value);
+    let varTemp = [...completedFilter];
+    let otherVar = varTemp.filter((item) => item.state === true);
+    setForm(otherVar);
+  };
+  const handleActiveFilter = (e) => {
+    setCondition(e.target.value);
+    let varTemp = [...activeFilter];
+    let otherVar = varTemp.filter((item) => item.state !== true);
+    setForm(otherVar);
+  };
+
+  if (condition == "all") {
+    componentOption = (
+      <>
+        <ButtonFilter value="all" activeButton onClick={handleAllFilter}>
+          All
+        </ButtonFilter>
+        <ButtonFilter value="activeb" onClick={handleActiveFilter}>
+          Active
+        </ButtonFilter>
+        <ButtonFilter value="completedb" onClick={handleCompletedFilter}>
+          Completed
+        </ButtonFilter>
+      </>
+    );
+  } else if (condition == "activeb") {
+    componentOption = (
+      <>
+        <ButtonFilter onClick={handleAllFilter} value="all">
+          All
+        </ButtonFilter>
+        <ButtonFilter onClick={handleActiveFilter} value="activeb" activeButton>
+          Active
+        </ButtonFilter>
+        <ButtonFilter onClick={handleCompletedFilter} value="completedb">
+          Completed
+        </ButtonFilter>
+      </>
+    );
+  } else {
+    componentOption = (
+      <>
+        <ButtonFilter onClick={handleAllFilter} value="all">
+          All
+        </ButtonFilter>
+        <ButtonFilter onClick={handleActiveFilter} value="activeb">
+          Active
+        </ButtonFilter>
+        <ButtonFilter
+          onClick={handleCompletedFilter}
+          value="completedb"
+          activeButton
+        >
+          Completed
+        </ButtonFilter>
+      </>
+    );
+  }
 
   return (
     <>
@@ -118,6 +217,7 @@ export default function FormToDo() {
             </ButtonClear>
           </DivCount>
         </Div>
+        <DivFilter>{componentOption}</DivFilter>
       </DivContainer>
     </>
   );
