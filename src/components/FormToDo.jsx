@@ -98,26 +98,26 @@ export default function FormToDo() {
     let varTemp = [...form];
     let otherVar = varTemp.filter((item) => item.id !== id);
     setForm(otherVar);
-    setAllFilter(form);
-    setCompletedFilter(form);
-    setActiveFilter(form);
+    setAllFilter(otherVar);
+    setCompletedFilter(otherVar);
+    setActiveFilter(otherVar);
   };
   const handleEdit = (id) => {
     let varTemp = [...form];
     let otherVar = varTemp.find((item) => item.id === id);
     otherVar.state = !otherVar.state;
     setForm(varTemp);
-    setAllFilter(form);
-    setCompletedFilter(form);
-    setActiveFilter(form);
+    setAllFilter(varTemp);
+    setCompletedFilter(varTemp);
+    setActiveFilter(varTemp);
   };
   const handleClearCompleted = () => {
     let varTemp = [...form];
     let otherVar = varTemp.filter((item) => item.state !== true);
     setForm(otherVar);
-    setAllFilter(form);
-    setCompletedFilter(form);
-    setActiveFilter(form);
+    setAllFilter(otherVar);
+    setCompletedFilter(otherVar);
+    setActiveFilter(otherVar);
   };
   const handleAllFilter = (e) => {
     setCondition(e.target.value);
