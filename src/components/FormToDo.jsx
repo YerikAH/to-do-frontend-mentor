@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import ToDo from "./ToDo";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 //styles
 const Form = styled.form`
@@ -10,6 +11,8 @@ const Form = styled.form`
   justify-content: center;
   margin-top: 2rem;
   padding: 0 1.5rem;
+  max-width: 610px;
+  width: 100%;
 `;
 const InputAdd = styled.input`
   width: 20px;
@@ -34,6 +37,8 @@ const DivForm = styled.div`
 `;
 const DivContainer = styled.div`
   padding: 1rem 1.5rem;
+  max-width: 610px;
+  width: 100%;
 `;
 const Div = styled.div`
   background-color: var(--very-light-gray);
@@ -89,9 +94,10 @@ export default function FormToDo() {
       state: false,
     };
     setForm([...form, workInfo]);
-    setAllFilter(form);
-    setCompletedFilter(form);
-    setActiveFilter(form);
+    setAllFilter([...form, workInfo]);
+    setCompletedFilter([...form, workInfo]);
+    setActiveFilter([...form, workInfo]);
+
     setWork("");
   };
   const handleRemoveTask = (id) => {
@@ -135,7 +141,12 @@ export default function FormToDo() {
     let otherVar = varTemp.filter((item) => item.state !== true);
     setForm(otherVar);
   };
-
+  const order = (arr, starti, endi) => {
+    const result = [...arr];
+    const [removed] = result.splice(starti, 1);
+    result.splice(endi, 0, removed);
+    return result;
+  };
   if (condition == "all") {
     componentOption = (
       <>
@@ -185,7 +196,32 @@ export default function FormToDo() {
   }
 
   return (
-    <>
+    <DragDropContext
+      onDragEnd={(result) => {
+        const { source, destination } = result;
+        if (!destination) {
+          return;
+        }
+        if (
+          source.index === destination.index &&
+          source.droppableId === destination.droppableId
+        ) {
+          return;
+        }
+        setForm((tempTodos) =>
+          order(tempTodos, source.index, destination.index)
+        );
+        setAllFilter((tempTodos) =>
+          order(tempTodos, source.index, destination.index)
+        );
+        setCompletedFilter((tempTodos) =>
+          order(tempTodos, source.index, destination.index)
+        );
+        setActiveFilter((tempTodos) =>
+          order(tempTodos, source.index, destination.index)
+        );
+      }}
+    >
       <Form onSubmit={handleClick}>
         <DivForm>
           <InputAdd type="button" value="" onClick={handleClick} />
@@ -197,19 +233,41 @@ export default function FormToDo() {
           />
         </DivForm>
       </Form>
-
       <DivContainer>
         <Div>
-          {form.map((item) => (
-            <ToDo
-              key={item.id}
-              work={item.work}
-              state={item.state}
-              ident={item.id}
-              handleRemoveTask={handleRemoveTask}
-              handleEdit={handleEdit}
-            />
-          ))}
+          <Droppable droppableId="tasks">
+            {(droppableProvided) => (
+              <div
+                {...droppableProvided.droppableProps}
+                ref={droppableProvided.innerRef}
+              >
+                {form.map((item, index) => (
+                  <Draggable
+                    key={item.id}
+                    draggableId={`${item.id}`}
+                    index={index}
+                  >
+                    {(draggableProvided) => (
+                      <div
+                        {...draggableProvided.draggableProps}
+                        ref={draggableProvided.innerRef}
+                        {...draggableProvided.dragHandleProps}
+                      >
+                        <ToDo
+                          work={item.work}
+                          state={item.state}
+                          ident={item.id}
+                          handleRemoveTask={handleRemoveTask}
+                          handleEdit={handleEdit}
+                        ></ToDo>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {droppableProvided.placeholder}
+              </div>
+            )}
+          </Droppable>
           <DivCount>
             <ParCount>{form.length} items left</ParCount>
             <ButtonClear onClick={handleClearCompleted}>
@@ -219,6 +277,6 @@ export default function FormToDo() {
         </Div>
         <DivFilter>{componentOption}</DivFilter>
       </DivContainer>
-    </>
+    </DragDropContext>
   );
 }

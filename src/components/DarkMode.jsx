@@ -34,12 +34,16 @@ const Nav = styled.nav`
   width: 100vw;
   position: relative;
   padding: 3rem 1.5rem 0 1.5rem;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 `;
 const Ul = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1000px;
+  max-width: 610px;
+  width: 100%;
 `;
 const H1 = styled.h1`
   letter-spacing: 0.4em;

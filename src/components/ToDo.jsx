@@ -29,6 +29,7 @@ const Button = styled.button`
   display: grid;
   place-items: center;
   place-content: center;
+  cursor: pointer;
 `;
 const GroupDiv = styled.div`
   display: flex;
@@ -45,6 +46,7 @@ const Par = styled.p`
 const Img = styled.img`
   width: 14px;
   height: 14px;
+  cursor: pointer;
 `;
 const ButtonDelete = styled.button`
   background: transparent;
