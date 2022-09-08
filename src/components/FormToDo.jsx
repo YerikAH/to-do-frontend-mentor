@@ -18,22 +18,41 @@ const InputAdd = styled.input`
   width: 20px;
   height: 20px;
   border-radius: 255px;
-  background-color: var(--very-light-gray);
-  border: 1px solid var(--light-grayish-blue-hover);
+  background-color: transparent;
+  border: ${(props) =>
+    props.darkTheme === "dark"
+      ? "1px solid var(--very-dark-grayish-blue)"
+      : "1px solid var(--light-grayish-blue-hover)"};
   margin-right: 1rem;
+  transition: 0.3s;
 `;
+
 const InputText = styled.input`
   border: none;
   outline: none;
   font-size: 0.9rem;
+  width: 100%;
+  background-color: ${(props) =>
+    props.darkTheme === "dark"
+      ? "var(--very-dark-desaturated-blue)"
+      : "hsl(0, 0%, 100%)"};
+  transition: 0.3s;
+  color: ${(props) =>
+    props.darkTheme === "dark"
+      ? "var(--light-grayish-blue)"
+      : "var(--check-background)"};
 `;
 const DivForm = styled.div`
   display: flex;
-  background-color: var(--very-light-gray);
+  background-color: ${(props) =>
+    props.darkTheme === "dark"
+      ? "var(--very-dark-desaturated-blue)"
+      : "var(--very-light-gray)"};
   width: 100%;
   align-items: center;
   border-radius: 0.4em;
   padding: 1rem;
+  transition: 0.3s;
 `;
 const DivContainer = styled.div`
   padding: 1rem 1.5rem;
@@ -41,7 +60,10 @@ const DivContainer = styled.div`
   width: 100%;
 `;
 const Div = styled.div`
-  background-color: var(--very-light-gray);
+  background-color: ${(props) =>
+    props.darkTheme === "dark"
+      ? "var(--very-dark-desaturated-blue)"
+      : "var(--very-light-gray)"};
   border-radius: 0.4em;
 `;
 const DivCount = styled.div`
@@ -78,7 +100,7 @@ const ButtonFilter = styled.button`
   padding: 1rem;
 `;
 
-export default function FormToDo() {
+export default function FormToDo({ darkTheme }) {
   let componentOption = null;
   const [work, setWork] = useState("");
   const [form, setForm] = useState([]);
@@ -223,18 +245,24 @@ export default function FormToDo() {
       }}
     >
       <Form onSubmit={handleClick}>
-        <DivForm>
-          <InputAdd type="button" value="" onClick={handleClick} />
+        <DivForm darkTheme={darkTheme}>
+          <InputAdd
+            type="button"
+            value=""
+            onClick={handleClick}
+            darkTheme={darkTheme}
+          />
           <InputText
             type="text"
             placeholder="Create a new todo..."
             value={work}
             onChange={(e) => setWork(e.target.value)}
+            darkTheme={darkTheme}
           />
         </DivForm>
       </Form>
       <DivContainer>
-        <Div>
+        <Div darkTheme={darkTheme}>
           <Droppable droppableId="tasks">
             {(droppableProvided) => (
               <div
@@ -254,6 +282,7 @@ export default function FormToDo() {
                         {...draggableProvided.dragHandleProps}
                       >
                         <ToDo
+                          darkTheme={darkTheme}
                           work={item.work}
                           state={item.state}
                           ident={item.id}

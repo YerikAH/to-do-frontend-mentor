@@ -11,7 +11,12 @@ const Div = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 1px solid var(--light-grayish-blue);
+  border-bottom: ${(props) =>
+    props.darkTheme === "dark"
+      ? "1px solid var(--very-dark-grayish-blue)"
+      : "1px solid var(--light-grayish-blue)"};
+
+  transition: 0.3s;
   overflow: auto;
 `;
 const Button = styled.button`
@@ -22,8 +27,13 @@ const Button = styled.button`
 
   border-radius: 255px;
   border: ${(props) =>
-    props.active ? "none" : "1px solid var(--light-grayish-blue-hover)"};
-
+    props.darkTheme === "dark"
+      ? props.active
+        ? "none"
+        : "1px solid var(--very-dark-grayish-blue)"
+      : props.active
+      ? "none"
+      : "1px solid var(--light-grayish-blue-hover)"};
   outline: none;
   margin-right: 10px;
   display: grid;
@@ -36,21 +46,22 @@ const GroupDiv = styled.div`
 `;
 const Par = styled.p`
   color: ${(props) =>
-    props.active
+    props.darkTheme === "dark"
+      ? props.active
+        ? "var(--dark-grayish-blue)"
+        : "var(--light-grayish-blue)"
+      : props.active
       ? "var(--light-grayish-blue)"
       : "var(--very-dark-grayish-blue)"};
   align-items: center;
   font-size: 0.9rem;
   display: flex;
+  transition: 0.3s;
 `;
 const Img = styled.img`
   width: 14px;
   height: 14px;
   cursor: pointer;
-`;
-const ButtonDelete = styled.button`
-  background: transparent;
-  border: none;
 `;
 const ImgCheck = styled.img``;
 export default function ToDo({
@@ -59,22 +70,30 @@ export default function ToDo({
   ident,
   handleRemoveTask,
   handleEdit,
+  darkTheme,
 }) {
   return (
     <>
-      <Div>
+      <Div darkTheme={darkTheme}>
         <GroupDiv>
           {!state ? (
-            <Button onClick={() => handleEdit(ident)}></Button>
+            <Button
+              darkTheme={darkTheme}
+              onClick={() => handleEdit(ident)}
+            ></Button>
           ) : (
-            <Button active onClick={() => handleEdit(ident)}>
+            <Button
+              darkTheme={darkTheme}
+              active
+              onClick={() => handleEdit(ident)}
+            >
               <ImgCheck src={checkstatus} />
             </Button>
           )}
           {!state ? (
-            <Par>{work}</Par>
+            <Par darkTheme={darkTheme}>{work}</Par>
           ) : (
-            <Par active>
+            <Par active darkTheme={darkTheme}>
               <del>{work}</del>
             </Par>
           )}

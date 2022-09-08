@@ -1,6 +1,6 @@
 //module
 
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 // images
@@ -47,7 +47,12 @@ const Ul = styled.ul`
 `;
 const H1 = styled.h1`
   letter-spacing: 0.4em;
-  color: var(--very-light-gray);
+  color: ${(props) =>
+    //Is same, i know
+    props.darkTheme === "dark"
+      ? "var(--very-light-gray)"
+      : "  var(--very-light-gray)"};
+
   font-size: 1.7rem;
 `;
 const Button = styled.button`
@@ -58,10 +63,10 @@ const Button = styled.button`
 `;
 export default function DarkMode() {
   const [validationMedia, setValidationMedia] = useState(false);
-  const [iconChange, setIconChange] = useState(moon);
-
+  const [iconChange, setIconChange] = useState(sun);
+  const [darkTheme, setDarkTheme] = useState("dark");
   //Validation media query
-  document.addEventListener("DOMContentLoaded", (e) => {
+  useEffect(() => {
     if (screen.width < 500) {
       console.log(screen.width);
       setValidationMedia(false);
@@ -69,7 +74,8 @@ export default function DarkMode() {
       console.log(screen.width);
       setValidationMedia(true);
     }
-  });
+  }, [window.innerWidth]);
+
   window.addEventListener("resize", (e) => {
     if (window.innerWidth < 500) {
       setValidationMedia(false);
@@ -84,12 +90,40 @@ export default function DarkMode() {
   const backMobile = {
     backgroundImage: `url(${lightImageMobile})`,
   };
+
+  const backDesktopDark = {
+    backgroundImage: `url(${darkImageDesktop})`,
+  };
+  const backMobileDark = {
+    backgroundImage: `url(${darkImageMobile})`,
+  };
+
+  const handleClick = () => {
+    let style = document.documentElement.style;
+    if (darkTheme === "dark") {
+      setDarkTheme("light");
+      localStorage.setItem("darkMode", "true");
+      setIconChange(moon);
+      style.setProperty("--only-father", "hsl(240, 12%, 97%)");
+    } else {
+      setDarkTheme("dark");
+      localStorage.setItem("darkMode", "false");
+      setIconChange(sun);
+      style.setProperty("--only-father", "hsl(235, 21%, 11%)");
+    }
+  };
   return (
     <>
-      <div>
+      <div className={darkTheme}>
         <header>
-          <DivImg className="responsive-img">
-            {validationMedia ? (
+          <DivImg className="responsive-img" darkTheme={darkTheme}>
+            {darkTheme === "dark" ? (
+              validationMedia ? (
+                <ImgMutant alt="" style={backDesktopDark} />
+              ) : (
+                <ImgMutant alt="" style={backMobileDark} />
+              )
+            ) : validationMedia ? (
               <ImgMutant alt="" style={backDesktop} />
             ) : (
               <ImgMutant alt="" style={backMobile} />
@@ -97,15 +131,19 @@ export default function DarkMode() {
           </DivImg>
           <Nav>
             <Ul>
-              <H1>TODO</H1>
+              <H1 darkTheme={darkTheme}>TODO</H1>
               <Button>
-                <img src={iconChange} alt="button darkmode" />
+                <img
+                  src={iconChange}
+                  alt="button darkmode"
+                  onClick={handleClick}
+                />
               </Button>
             </Ul>
           </Nav>
         </header>
         <main>
-          <FormToDo />
+          <FormToDo darkTheme={darkTheme} />
         </main>
       </div>
     </>
