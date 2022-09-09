@@ -11,7 +11,7 @@ const Form = styled.form`
   justify-content: center;
   margin-top: 2rem;
   padding: 0 1.5rem;
-  max-width: 610px;
+  max-width: 550px;
   width: 100%;
 `;
 const InputAdd = styled.input`
@@ -41,6 +41,10 @@ const InputText = styled.input`
     props.darkTheme === "dark"
       ? "var(--light-grayish-blue)"
       : "var(--check-background)"};
+
+  @media (min-width: 710px) {
+    font-size: 1rem;
+  }
 `;
 const DivForm = styled.div`
   display: flex;
@@ -56,7 +60,7 @@ const DivForm = styled.div`
 `;
 const DivContainer = styled.div`
   padding: 1rem 1.5rem;
-  max-width: 610px;
+  max-width: 550px;
   width: 100%;
 `;
 const Div = styled.div`
@@ -82,11 +86,18 @@ const ButtonClear = styled.button`
   color: var(--dark-grayish-blue);
 `;
 const DivFilter = styled.div`
-  background-color: var(--very-light-gray);
+  background-color: ${(props) =>
+    props.darkTheme === "dark"
+      ? "var(--very-dark-desaturated-blue)"
+      : "var(--very-light-gray)"};
+
   border-radius: 0.4em;
   margin-top: 2rem;
   display: flex;
   justify-content: space-evenly;
+  @media (min-width: 710px) {
+    display: none;
+  }
 `;
 const ButtonFilter = styled.button`
   font-size: 0.9rem;
@@ -98,16 +109,151 @@ const ButtonFilter = styled.button`
   background: transparent;
   border: none;
   padding: 1rem;
+  @media (min-width: 710px) {
+    padding: 0 1rem;
+  }
 `;
+
+const DivFilterDesktop = styled.div`
+  display: none;
+  @media (min-width: 710px) {
+    display: block;
+  }
+`;
+const Advice = styled.span``;
 
 export default function FormToDo({ darkTheme }) {
   let componentOption = null;
   const [work, setWork] = useState("");
-  const [form, setForm] = useState([]);
+  const [form, setForm] = useState([
+    {
+      id: 1,
+      work: "Complete online JavaScript course",
+      state: true,
+    },
+    {
+      id: 2,
+      work: "Jog around the park 3x",
+      state: false,
+    },
+    {
+      id: 3,
+      work: "10 minutes meditation",
+      state: false,
+    },
+    {
+      id: 4,
+      work: "Read for 1 hour",
+      state: false,
+    },
+    {
+      id: 5,
+      work: "Pick up groceries",
+      state: false,
+    },
+    {
+      id: 6,
+      work: "Complete Todo App on Frontend Mentor",
+      state: true,
+    },
+  ]);
   const [condition, setCondition] = useState("all");
-  const [allFilter, setAllFilter] = useState([]);
-  const [completedFilter, setCompletedFilter] = useState([]);
-  const [activeFilter, setActiveFilter] = useState([]);
+  const [allFilter, setAllFilter] = useState([
+    {
+      id: 1,
+      work: "Complete online JavaScript course",
+      state: true,
+    },
+    {
+      id: 2,
+      work: "Jog around the park 3x",
+      state: false,
+    },
+    {
+      id: 3,
+      work: "10 minutes meditation",
+      state: false,
+    },
+    {
+      id: 4,
+      work: "Read for 1 hour",
+      state: false,
+    },
+    {
+      id: 5,
+      work: "Pick up groceries",
+      state: false,
+    },
+    {
+      id: 6,
+      work: "Complete Todo App on Frontend Mentor",
+      state: true,
+    },
+  ]);
+  const [completedFilter, setCompletedFilter] = useState([
+    {
+      id: 1,
+      work: "Complete online JavaScript course",
+      state: true,
+    },
+    {
+      id: 2,
+      work: "Jog around the park 3x",
+      state: false,
+    },
+    {
+      id: 3,
+      work: "10 minutes meditation",
+      state: false,
+    },
+    {
+      id: 4,
+      work: "Read for 1 hour",
+      state: false,
+    },
+    {
+      id: 5,
+      work: "Pick up groceries",
+      state: false,
+    },
+    {
+      id: 6,
+      work: "Complete Todo App on Frontend Mentor",
+      state: true,
+    },
+  ]);
+  const [activeFilter, setActiveFilter] = useState([
+    {
+      id: 1,
+      work: "Complete online JavaScript course",
+      state: true,
+    },
+    {
+      id: 2,
+      work: "Jog around the park 3x",
+      state: false,
+    },
+    {
+      id: 3,
+      work: "10 minutes meditation",
+      state: false,
+    },
+    {
+      id: 4,
+      work: "Read for 1 hour",
+      state: false,
+    },
+    {
+      id: 5,
+      work: "Pick up groceries",
+      state: false,
+    },
+    {
+      id: 6,
+      work: "Complete Todo App on Frontend Mentor",
+      state: true,
+    },
+  ]);
   const handleClick = (e) => {
     e.preventDefault();
     let workInfo = {
@@ -172,13 +318,26 @@ export default function FormToDo({ darkTheme }) {
   if (condition == "all") {
     componentOption = (
       <>
-        <ButtonFilter value="all" activeButton onClick={handleAllFilter}>
+        <ButtonFilter
+          value="all"
+          activeButton
+          onClick={handleAllFilter}
+          darkTheme={darkTheme}
+        >
           All
         </ButtonFilter>
-        <ButtonFilter value="activeb" onClick={handleActiveFilter}>
+        <ButtonFilter
+          value="activeb"
+          onClick={handleActiveFilter}
+          darkTheme={darkTheme}
+        >
           Active
         </ButtonFilter>
-        <ButtonFilter value="completedb" onClick={handleCompletedFilter}>
+        <ButtonFilter
+          value="completedb"
+          onClick={handleCompletedFilter}
+          darkTheme={darkTheme}
+        >
           Completed
         </ButtonFilter>
       </>
@@ -186,13 +345,26 @@ export default function FormToDo({ darkTheme }) {
   } else if (condition == "activeb") {
     componentOption = (
       <>
-        <ButtonFilter onClick={handleAllFilter} value="all">
+        <ButtonFilter
+          onClick={handleAllFilter}
+          value="all"
+          darkTheme={darkTheme}
+        >
           All
         </ButtonFilter>
-        <ButtonFilter onClick={handleActiveFilter} value="activeb" activeButton>
+        <ButtonFilter
+          onClick={handleActiveFilter}
+          value="activeb"
+          activeButton
+          darkTheme={darkTheme}
+        >
           Active
         </ButtonFilter>
-        <ButtonFilter onClick={handleCompletedFilter} value="completedb">
+        <ButtonFilter
+          onClick={handleCompletedFilter}
+          value="completedb"
+          darkTheme={darkTheme}
+        >
           Completed
         </ButtonFilter>
       </>
@@ -200,16 +372,25 @@ export default function FormToDo({ darkTheme }) {
   } else {
     componentOption = (
       <>
-        <ButtonFilter onClick={handleAllFilter} value="all">
+        <ButtonFilter
+          onClick={handleAllFilter}
+          value="all"
+          darkTheme={darkTheme}
+        >
           All
         </ButtonFilter>
-        <ButtonFilter onClick={handleActiveFilter} value="activeb">
+        <ButtonFilter
+          onClick={handleActiveFilter}
+          value="activeb"
+          darkTheme={darkTheme}
+        >
           Active
         </ButtonFilter>
         <ButtonFilter
           onClick={handleCompletedFilter}
           value="completedb"
           activeButton
+          darkTheme={darkTheme}
         >
           Completed
         </ButtonFilter>
@@ -299,12 +480,16 @@ export default function FormToDo({ darkTheme }) {
           </Droppable>
           <DivCount>
             <ParCount>{form.length} items left</ParCount>
+            <DivFilterDesktop darkTheme={darkTheme}>
+              {componentOption}
+            </DivFilterDesktop>
             <ButtonClear onClick={handleClearCompleted}>
               Clear Completed
             </ButtonClear>
           </DivCount>
         </Div>
-        <DivFilter>{componentOption}</DivFilter>
+        <DivFilter darkTheme={darkTheme}>{componentOption}</DivFilter>
+        <Advice>Drag and drop to reorder list</Advice>
       </DivContainer>
     </DragDropContext>
   );

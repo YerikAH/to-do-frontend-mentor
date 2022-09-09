@@ -26,8 +26,8 @@ const ImgMutant = styled.img`
   height: 220px;
   background-size: cover;
   filter: brightness(1.1);
-  @media (min-width: 500px) {
-    height: 250px;
+  @media (min-width: 710px) {
+    height: 300px;
   }
 `;
 const Nav = styled.nav`
@@ -37,23 +37,29 @@ const Nav = styled.nav`
   justify-content: center;
   display: flex;
   align-items: center;
+  @media (min-width: 710px) {
+    padding: 5rem 1.5rem 0 1.5rem;
+  }
 `;
 const Ul = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 610px;
+  max-width: 502px;
   width: 100%;
 `;
 const H1 = styled.h1`
   letter-spacing: 0.4em;
   color: ${(props) =>
-    //Is same, i know
+    //Is same, i know <
     props.darkTheme === "dark"
       ? "var(--very-light-gray)"
       : "  var(--very-light-gray)"};
 
   font-size: 1.7rem;
+  @media (min-width: 710px) {
+    font-size: 2.2rem;
+  }
 `;
 const Button = styled.button`
   border: none;

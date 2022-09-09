@@ -18,6 +18,9 @@ const Div = styled.div`
 
   transition: 0.3s;
   overflow: auto;
+  &:hover img {
+    opacity: 1;
+  }
 `;
 const Button = styled.button`
   width: 20px;
@@ -39,7 +42,12 @@ const Button = styled.button`
   display: grid;
   place-items: center;
   place-content: center;
+  transition: 0.3s;
   cursor: pointer;
+  &:hover {
+    border: ${(props) =>
+      props.active ? "" : "1px solid rgba(86, 221, 255, 1)"};
+  }
 `;
 const GroupDiv = styled.div`
   display: flex;
@@ -57,11 +65,23 @@ const Par = styled.p`
   font-size: 0.9rem;
   display: flex;
   transition: 0.3s;
+  @media (min-width: 710px) {
+    font-size: 1rem;
+  }
 `;
 const Img = styled.img`
   width: 14px;
   height: 14px;
   cursor: pointer;
+  transition: 0.3s;
+  opacity: 1;
+  @media (min-width: 710px) {
+    opacity: 0;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 const ImgCheck = styled.img``;
 export default function ToDo({
@@ -98,7 +118,6 @@ export default function ToDo({
             </Par>
           )}
         </GroupDiv>
-
         <Img src={deletetask} onClick={() => handleRemoveTask(ident)} />
       </Div>
     </>
