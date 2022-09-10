@@ -1,5 +1,5 @@
 // modules
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import ToDo from "./ToDo";
@@ -11,7 +11,7 @@ const Form = styled.form`
   justify-content: center;
   margin-top: 2rem;
   padding: 0 1.5rem;
-  max-width: 550px;
+  max-width: 588px;
   width: 100%;
 `;
 const InputAdd = styled.input`
@@ -25,6 +25,12 @@ const InputAdd = styled.input`
       : "1px solid var(--light-grayish-blue-hover)"};
   margin-right: 1rem;
   transition: 0.3s;
+  @media (min-width: 710px) {
+    width: 25px;
+    height: 25px;
+    margin-right: 1.5rem;
+    cursor: pointer;
+  }
 `;
 
 const InputText = styled.input`
@@ -40,10 +46,10 @@ const InputText = styled.input`
   color: ${(props) =>
     props.darkTheme === "dark"
       ? "var(--light-grayish-blue)"
-      : "var(--check-background)"};
+      : "var(--very-dark-grayish-blue)"};
 
   @media (min-width: 710px) {
-    font-size: 1rem;
+    font-size: 1.125rem;
   }
 `;
 const DivForm = styled.div`
@@ -55,12 +61,12 @@ const DivForm = styled.div`
   width: 100%;
   align-items: center;
   border-radius: 0.4em;
-  padding: 1rem;
+  padding: 1.4rem;
   transition: 0.3s;
 `;
 const DivContainer = styled.div`
   padding: 1rem 1.5rem;
-  max-width: 550px;
+  max-width: 588px;
   width: 100%;
 `;
 const Div = styled.div`
@@ -120,12 +126,10 @@ const DivFilterDesktop = styled.div`
     display: block;
   }
 `;
-const Advice = styled.span``;
 
 export default function FormToDo({ darkTheme }) {
   let componentOption = null;
-  const [work, setWork] = useState("");
-  const [form, setForm] = useState([
+  const objTest = [
     {
       id: 1,
       work: "Complete online JavaScript course",
@@ -156,104 +160,28 @@ export default function FormToDo({ darkTheme }) {
       work: "Complete Todo App on Frontend Mentor",
       state: true,
     },
-  ]);
+  ];
   const [condition, setCondition] = useState("all");
-  const [allFilter, setAllFilter] = useState([
-    {
-      id: 1,
-      work: "Complete online JavaScript course",
-      state: true,
-    },
-    {
-      id: 2,
-      work: "Jog around the park 3x",
-      state: false,
-    },
-    {
-      id: 3,
-      work: "10 minutes meditation",
-      state: false,
-    },
-    {
-      id: 4,
-      work: "Read for 1 hour",
-      state: false,
-    },
-    {
-      id: 5,
-      work: "Pick up groceries",
-      state: false,
-    },
-    {
-      id: 6,
-      work: "Complete Todo App on Frontend Mentor",
-      state: true,
-    },
-  ]);
-  const [completedFilter, setCompletedFilter] = useState([
-    {
-      id: 1,
-      work: "Complete online JavaScript course",
-      state: true,
-    },
-    {
-      id: 2,
-      work: "Jog around the park 3x",
-      state: false,
-    },
-    {
-      id: 3,
-      work: "10 minutes meditation",
-      state: false,
-    },
-    {
-      id: 4,
-      work: "Read for 1 hour",
-      state: false,
-    },
-    {
-      id: 5,
-      work: "Pick up groceries",
-      state: false,
-    },
-    {
-      id: 6,
-      work: "Complete Todo App on Frontend Mentor",
-      state: true,
-    },
-  ]);
-  const [activeFilter, setActiveFilter] = useState([
-    {
-      id: 1,
-      work: "Complete online JavaScript course",
-      state: true,
-    },
-    {
-      id: 2,
-      work: "Jog around the park 3x",
-      state: false,
-    },
-    {
-      id: 3,
-      work: "10 minutes meditation",
-      state: false,
-    },
-    {
-      id: 4,
-      work: "Read for 1 hour",
-      state: false,
-    },
-    {
-      id: 5,
-      work: "Pick up groceries",
-      state: false,
-    },
-    {
-      id: 6,
-      work: "Complete Todo App on Frontend Mentor",
-      state: true,
-    },
-  ]);
+  const [work, setWork] = useState("");
+  const [form, setForm] = useState([]);
+  const [allFilter, setAllFilter] = useState([]);
+  const [completedFilter, setCompletedFilter] = useState([]);
+  const [activeFilter, setActiveFilter] = useState([]);
+  useEffect(() => {
+    if (!localStorage.getItem("task")) {
+      setForm(objTest);
+      setAllFilter(objTest);
+      setCompletedFilter(objTest);
+      setActiveFilter(objTest);
+    } else {
+      let tempVar = JSON.parse(localStorage.getItem("task"));
+      setForm(tempVar);
+      setAllFilter(tempVar);
+      setCompletedFilter(tempVar);
+      setActiveFilter(tempVar);
+    }
+  }, []);
+
   const handleClick = (e) => {
     e.preventDefault();
     let workInfo = {
@@ -265,8 +193,8 @@ export default function FormToDo({ darkTheme }) {
     setAllFilter([...form, workInfo]);
     setCompletedFilter([...form, workInfo]);
     setActiveFilter([...form, workInfo]);
-
     setWork("");
+    localStorage.setItem("task", JSON.stringify([...form, workInfo]));
   };
   const handleRemoveTask = (id) => {
     let varTemp = [...form];
@@ -275,6 +203,7 @@ export default function FormToDo({ darkTheme }) {
     setAllFilter(otherVar);
     setCompletedFilter(otherVar);
     setActiveFilter(otherVar);
+    localStorage.setItem("task", JSON.stringify(otherVar));
   };
   const handleEdit = (id) => {
     let varTemp = [...form];
@@ -284,6 +213,7 @@ export default function FormToDo({ darkTheme }) {
     setAllFilter(varTemp);
     setCompletedFilter(varTemp);
     setActiveFilter(varTemp);
+    localStorage.setItem("task", JSON.stringify(varTemp));
   };
   const handleClearCompleted = () => {
     let varTemp = [...form];
@@ -292,6 +222,7 @@ export default function FormToDo({ darkTheme }) {
     setAllFilter(otherVar);
     setCompletedFilter(otherVar);
     setActiveFilter(otherVar);
+    localStorage.setItem("task", JSON.stringify(otherVar));
   };
   const handleAllFilter = (e) => {
     setCondition(e.target.value);
@@ -423,6 +354,7 @@ export default function FormToDo({ darkTheme }) {
         setActiveFilter((tempTodos) =>
           order(tempTodos, source.index, destination.index)
         );
+        localStorage.setItem("task", JSON.stringify(form));
       }}
     >
       <Form onSubmit={handleClick}>
@@ -489,7 +421,6 @@ export default function FormToDo({ darkTheme }) {
           </DivCount>
         </Div>
         <DivFilter darkTheme={darkTheme}>{componentOption}</DivFilter>
-        <Advice>Drag and drop to reorder list</Advice>
       </DivContainer>
     </DragDropContext>
   );

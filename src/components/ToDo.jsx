@@ -10,7 +10,7 @@ import checkstatus from "../images/icon-check.svg";
 const Div = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1.39rem;
   border-bottom: ${(props) =>
     props.darkTheme === "dark"
       ? "1px solid var(--very-dark-grayish-blue)"
@@ -48,6 +48,11 @@ const Button = styled.button`
     border: ${(props) =>
       props.active ? "" : "1px solid rgba(86, 221, 255, 1)"};
   }
+  @media (min-width: 710px) {
+    width: 25px;
+    height: 25px;
+    margin-right: 1.5rem;
+  }
 `;
 const GroupDiv = styled.div`
   display: flex;
@@ -66,7 +71,7 @@ const Par = styled.p`
   display: flex;
   transition: 0.3s;
   @media (min-width: 710px) {
-    font-size: 1rem;
+    font-size: 1.125rem;
   }
 `;
 const Img = styled.img`
@@ -77,6 +82,8 @@ const Img = styled.img`
   opacity: 1;
   @media (min-width: 710px) {
     opacity: 0;
+    width: 18px;
+    height: 18px;
   }
 
   &:hover {

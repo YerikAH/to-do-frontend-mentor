@@ -1,6 +1,7 @@
 //module
 
 import React, { useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 // images
@@ -12,7 +13,6 @@ import darkImageMobile from "../images/bg-mobile-dark.jpg";
 
 import sun from "../images/icon-sun.svg";
 import moon from "../images/icon-moon.svg";
-import { useState } from "react";
 import FormToDo from "./FormToDo";
 
 // styles
@@ -45,7 +45,7 @@ const Ul = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 502px;
+  max-width: 535px;
   width: 100%;
 `;
 const H1 = styled.h1`
@@ -67,10 +67,19 @@ const Button = styled.button`
   outline: none;
   cursor: pointer;
 `;
+const Advice = styled.span`
+  text-align: center;
+  width: 100%;
+  display: block;
+  font-size: 0.875rem;
+  margin: 2rem 0;
+  color: var(--dark-grayish-blue);
+`;
 export default function DarkMode() {
   const [validationMedia, setValidationMedia] = useState(false);
   const [iconChange, setIconChange] = useState(sun);
   const [darkTheme, setDarkTheme] = useState("dark");
+  let style = document.documentElement.style;
   //Validation media query
   useEffect(() => {
     if (screen.width < 500) {
@@ -81,6 +90,21 @@ export default function DarkMode() {
       setValidationMedia(true);
     }
   }, [window.innerWidth]);
+  useEffect(() => {
+    if (!localStorage.getItem("darkMode")) {
+      localStorage.setItem("darkMode", "false");
+    } else {
+      if (localStorage.getItem("darkMode") === "false") {
+        setDarkTheme("dark");
+        setIconChange(sun);
+        style.setProperty("--only-father", "hsl(235, 21%, 11%)");
+      } else {
+        setDarkTheme("light");
+        setIconChange(moon);
+        style.setProperty("--only-father", "hsl(240, 12%, 97%)");
+      }
+    }
+  }, []);
 
   window.addEventListener("resize", (e) => {
     if (window.innerWidth < 500) {
@@ -105,7 +129,6 @@ export default function DarkMode() {
   };
 
   const handleClick = () => {
-    let style = document.documentElement.style;
     if (darkTheme === "dark") {
       setDarkTheme("light");
       localStorage.setItem("darkMode", "true");
@@ -151,6 +174,10 @@ export default function DarkMode() {
         <main>
           <FormToDo darkTheme={darkTheme} />
         </main>
+        <footer>
+          {" "}
+          <Advice>Drag and drop to reorder list</Advice>
+        </footer>
       </div>
     </>
   );

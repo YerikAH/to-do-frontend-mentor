@@ -35,6 +35,7 @@
 html {
   background-color: var(--only-father);
   transition: 0.3s;
+  overflow-x: hidden;
 }
 main {
   position: relative;
