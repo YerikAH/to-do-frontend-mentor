@@ -55,7 +55,7 @@ const InputText = styled.input`
   }
 `;
 const DivForm = styled.div`
-  display: flex;
+  display: grid;
   background-color: ${(props) =>
     props.darkTheme === "dark"
       ? "var(--very-dark-desaturated-blue)"
@@ -64,7 +64,11 @@ const DivForm = styled.div`
   align-items: center;
   border-radius: 0.4em;
   padding: 1.4rem;
+  grid-template-columns: 15% 85%;
   transition: 0.3s;
+  @media (min-width: 710px) {
+    grid-template-columns: 50px 160px auto;
+  }
 `;
 const DivContainer = styled.div`
   margin: 1rem 1.5rem;
@@ -154,7 +158,19 @@ const DivFilterDesktop = styled.div`
     display: block;
   }
 `;
+const MessageCurrent = styled.span`
+  color: ${(props) =>
+    props.darkTheme === "dark"
+      ? "var(--light-grayish-blue)"
+      : "var(--very-dark-grayish-blue)"};
 
+  font-size: 0.9rem;
+  display: none;
+  @media (min-width: 710px) {
+    font-size: 1.125rem;
+    display: block;
+  }
+`;
 export default function FormToDo({ darkTheme }) {
   let componentOption = null;
   const objTest = [
@@ -195,6 +211,8 @@ export default function FormToDo({ darkTheme }) {
   const [allFilter, setAllFilter] = useState([]);
   const [completedFilter, setCompletedFilter] = useState([]);
   const [activeFilter, setActiveFilter] = useState([]);
+  const [currentTipe, setCurrentTipe] = useState(false);
+
   useEffect(() => {
     if (!localStorage.getItem("task")) {
       setForm(objTest);
@@ -209,20 +227,26 @@ export default function FormToDo({ darkTheme }) {
       setActiveFilter(tempVar);
     }
   }, []);
-
+  const handleAll = (e) => {
+    setWork(e.target.value);
+    setCurrentTipe(true);
+  };
   const handleClick = (e) => {
     e.preventDefault();
-    let workInfo = {
-      id: Date.now(),
-      work: work,
-      state: false,
-    };
-    setForm([...form, workInfo]);
-    setAllFilter([...form, workInfo]);
-    setCompletedFilter([...form, workInfo]);
-    setActiveFilter([...form, workInfo]);
-    setWork("");
-    localStorage.setItem("task", JSON.stringify([...form, workInfo]));
+    if (work == "") return;
+    else {
+      let workInfo = {
+        id: Date.now(),
+        work: work,
+        state: false,
+      };
+      setForm([...form, workInfo]);
+      setAllFilter([...form, workInfo]);
+      setCompletedFilter([...form, workInfo]);
+      setActiveFilter([...form, workInfo]);
+      setWork("");
+      localStorage.setItem("task", JSON.stringify([...form, workInfo]));
+    }
   };
   const handleRemoveTask = (id) => {
     let varTemp = [...form];
@@ -393,11 +417,17 @@ export default function FormToDo({ darkTheme }) {
             onClick={handleClick}
             darkTheme={darkTheme}
           />
+          {currentTipe && (
+            <MessageCurrent darkTheme={darkTheme}>
+              Currently typing
+            </MessageCurrent>
+          )}
           <InputText
             type="text"
             placeholder="Create a new todo..."
             value={work}
-            onChange={(e) => setWork(e.target.value)}
+            onChange={handleAll}
+            onBlur={() => setCurrentTipe(false)}
             darkTheme={darkTheme}
           />
         </DivForm>
