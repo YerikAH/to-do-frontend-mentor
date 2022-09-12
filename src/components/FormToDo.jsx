@@ -65,9 +65,11 @@ const DivForm = styled.div`
   transition: 0.3s;
 `;
 const DivContainer = styled.div`
-  padding: 1rem 1.5rem;
-  max-width: 588px;
+  margin: 1rem 1.5rem;
+  max-width: 540px;
   width: 100%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 `;
 const Div = styled.div`
   background-color: ${(props) =>
@@ -90,6 +92,9 @@ const ButtonClear = styled.button`
   background: transparent;
   font-size: 0.9rem;
   color: var(--dark-grayish-blue);
+  &:hover {
+    color: var(--very-dark-grayish-blue);
+  }
 `;
 const DivFilter = styled.div`
   background-color: ${(props) =>
@@ -115,6 +120,16 @@ const ButtonFilter = styled.button`
   background: transparent;
   border: none;
   padding: 1rem;
+  &:hover {
+    color: ${(props) =>
+      props.darkTheme == "dark"
+        ? props.activeButton
+          ? "var(--bright-blue)"
+          : "var(--very-light-gray)"
+        : props.activeButton
+        ? "var(--bright-blue)"
+        : "var(--very-dark-grayish-blue)"};
+  }
   @media (min-width: 710px) {
     padding: 0 1rem;
   }
@@ -158,7 +173,7 @@ export default function FormToDo({ darkTheme }) {
     {
       id: 6,
       work: "Complete Todo App on Frontend Mentor",
-      state: true,
+      state: false,
     },
   ];
   const [condition, setCondition] = useState("all");

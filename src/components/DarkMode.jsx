@@ -58,7 +58,7 @@ const H1 = styled.h1`
 
   font-size: 1.7rem;
   @media (min-width: 710px) {
-    font-size: 2.2rem;
+    font-size: 2.3rem;
   }
 `;
 const Button = styled.button`
