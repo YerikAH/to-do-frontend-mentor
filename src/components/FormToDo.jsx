@@ -10,9 +10,11 @@ const Form = styled.form`
   display: flex;
   justify-content: center;
   margin-top: 2rem;
-  padding: 0 1.5rem;
   max-width: 588px;
   width: 100%;
+  @media (min-width: 710px) {
+    padding: 0 1.5rem;
+  }
 `;
 const InputAdd = styled.input`
   width: 20px;
@@ -68,8 +70,10 @@ const DivContainer = styled.div`
   margin: 1rem 1.5rem;
   max-width: 540px;
   width: 100%;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  @media (min-width: 710px) {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
 `;
 const Div = styled.div`
   background-color: ${(props) =>
@@ -77,6 +81,11 @@ const Div = styled.div`
       ? "var(--very-dark-desaturated-blue)"
       : "var(--very-light-gray)"};
   border-radius: 0.4em;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  @media (min-width: 710px) {
+    box-shadow: none;
+  }
 `;
 const DivCount = styled.div`
   display: flex;
@@ -106,13 +115,17 @@ const DivFilter = styled.div`
   margin-top: 2rem;
   display: flex;
   justify-content: space-evenly;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   @media (min-width: 710px) {
     display: none;
+    box-shadow: none;
   }
 `;
 const ButtonFilter = styled.button`
   font-size: 0.9rem;
   font-weight: 700;
+  transition: 0.3s;
   color: ${(props) =>
     props.activeButton ? "var(--bright-blue)" : "  var(--dark-grayish-blue);"};
 
