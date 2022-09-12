@@ -28,6 +28,7 @@ const ImgMutant = styled.img`
   filter: brightness(1.1);
   @media (min-width: 710px) {
     height: 300px;
+    filter: brightness(1);
   }
 `;
 const Nav = styled.nav`
