@@ -21,7 +21,7 @@ const DivImg = styled.div`
   z-index: 0;
   width: 100vw;
 `;
-const ImgMutant = styled.img`
+const ImgMutant = styled.div`
   width: 100%;
   height: 220px;
   background-size: cover;
