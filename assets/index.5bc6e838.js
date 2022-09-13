@@ -291,7 +291,7 @@ Error generating stack: `+o.message+`
   position: absolute;
   z-index: 0;
   width: 100vw;
-`,fo=ce.img`
+`,fo=ce.div`
   width: 100%;
   height: 220px;
   background-size: cover;
